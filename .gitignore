@@ -21,8 +21,7 @@
 /build
 
 # md files
-mysql_nodejs_guide.md
-
+documentation/
 # misc
 .DS_Store
 *.pem
