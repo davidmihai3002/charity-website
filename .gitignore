@@ -20,6 +20,9 @@
 # production
 /build
 
+# md files
+mysql_nodejs_guide.md
+
 # misc
 .DS_Store
 *.pem
