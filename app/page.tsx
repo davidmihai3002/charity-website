@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 interface User {
   id: number;
   name: string;
@@ -9,5 +11,10 @@ interface User {
 }
 
 export default function Home() {
+  useEffect(() => {
+    fetch("/api/users")
+      .then((response) => response.json())
+      .then((users: User[]) => console.log(users));
+  }, []);
   return <div className=""></div>;
 }
