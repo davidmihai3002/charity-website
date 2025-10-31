@@ -1,20 +1,11 @@
 "use client";
 
+import { apiClient } from "@/lib/connections/api";
 import { useEffect } from "react";
-
-interface User {
-  id: number;
-  name: string;
-  age: string;
-  email: string;
-  password: string;
-}
 
 export default function Home() {
   useEffect(() => {
-    fetch("/api/users")
-      .then((response) => response.json())
-      .then((users: User[]) => console.log(users));
+    apiClient.get("/users").then((res) => console.log(res.data));
   }, []);
   return <div className=""></div>;
 }
