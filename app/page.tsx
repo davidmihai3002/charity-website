@@ -1,8 +1,5 @@
 "use client";
 
-import { Auth } from "@/components/Auth";
-import { useEffect, useState } from "react";
-
 interface User {
   id: number;
   name: string;
@@ -12,9 +9,5 @@ interface User {
 }
 
 export default function Home() {
-  return (
-    <div className="">
-      <Auth />
-    </div>
-  );
+  return <div className=""></div>;
 }

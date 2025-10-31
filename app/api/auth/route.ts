@@ -1,4 +1,4 @@
-import { createUser } from "@/models/users/createUser";
+import { createUser } from "@/services/users/createUser";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
