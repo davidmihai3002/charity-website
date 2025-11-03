@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export const navLinks = [
   {
-    linkTitle: "Home",
-    linkUrl: "/",
+    linkTitle: "Account",
+    linkUrl: "/auth",
   },
   {
     linkTitle: "About Us",
@@ -26,8 +26,10 @@ export const navLinks = [
 
 const MainHeader = () => {
   return (
-    <div className="w-screen bg-amber-100 h-fit flex flex-row justify-between items-center px-[110px] py-[18px] ">
-      <p>ElderHelp</p>
+    <div className="w-screen bg-background h-fit flex flex-row justify-between items-center px-[110px] py-[18px] ">
+      <Link href={"/"} className="text-2xl text-dark-text">
+        ElderHelp
+      </Link>
       <div className="w-fit flex flex-row justify-between py-4 gap-10 text-inactive-text">
         {navLinks.map((link, i) => (
           <Link key={i} href={link.linkUrl}>

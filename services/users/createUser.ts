@@ -12,7 +12,7 @@ export async function createUser({
   password: string;
 }) {
   const [result] = await db.query(
-    "INSERT INTO users (name, age, email, password) VALUES ('?', '?', ?, ?)",
+    "INSERT INTO users (name, age, email, password) VALUES (?, ?, ?, ?)",
     [name, age, email, password]
   );
 
