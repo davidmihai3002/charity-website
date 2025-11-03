@@ -54,10 +54,10 @@ export async function POST(req: Request) {
         email: receivedUser.email,
         password: hashedPassword,
       };
-      const result = await createUser(userToRegister);
-      console.log("Create user result:", result);
+      const insertId = await createUser(userToRegister);
+      console.log("Create user result:", insertId);
 
-      if (result?.insertId) {
+      if (insertId) {
         return NextResponse.json({ message: "User created" }, { status: 200 });
       } else {
         return NextResponse.json(
