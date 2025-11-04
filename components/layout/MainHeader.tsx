@@ -4,7 +4,7 @@ import Link from "next/link";
 export const navLinks = [
   {
     linkTitle: "Account",
-    linkUrl: "/auth",
+    linkUrl: "/login",
   },
   {
     linkTitle: "About Us",

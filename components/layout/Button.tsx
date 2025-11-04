@@ -1,3 +1,5 @@
+import { IconNode } from "lucide";
+
 const Button = ({
   variant,
   text,
@@ -7,14 +9,14 @@ const Button = ({
 }: {
   variant: "primary" | "secondary" | "navigation";
   buttonType?: "button" | "submit";
-  text: string;
+  text: string | React.ReactNode;
   className?: string;
   onClick?: () => void;
 }) => {
   return (
     <button
       onClick={onClick}
-      className={`${className} cursor-pointer px-8 h-[51px] rounded-sm ${
+      className={`${className} cursor-pointer flex justify-center items-center px-8 h-[51px] rounded-sm ${
         variant === "primary"
           ? " text-dark-text bg-primary-button"
           : variant === "secondary"

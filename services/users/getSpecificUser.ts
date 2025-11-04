@@ -9,7 +9,10 @@ interface MySQLUser extends RowDataPacket {
   password: string;
 }
 
-export async function getUsers() {
-  const [rows] = await db.query<MySQLUser[]>("SELECT * FROM users");
-  return rows;
+export async function getSpecificUserByEmail(email: string) {
+  const [rows] = await db.query<MySQLUser[]>(
+    "SELECT * FROM users WHERE email = ?",
+    [email]
+  );
+  return rows[0] ?? null;
 }

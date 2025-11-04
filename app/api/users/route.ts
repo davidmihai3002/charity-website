@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const users = await getUsers();
+    // const users = await getSpecificUser("david.popovici@thinslices.com");
+
     return NextResponse.json(users, { status: 200 });
   } catch (error) {
     console.error(error);

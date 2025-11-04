@@ -1,15 +1,20 @@
 "use client";
 
+import AuthInfoMessage from "@/components/auth/InfoMessage";
+import LoadingSpinner from "@/components/auth/LoadingSpinner";
+import ElderhelpLogo from "@/components/business/ElderhelpLogo";
 import Button from "@/components/layout/Button";
 import { apiClient } from "@/lib/connections/api";
+import { AuthMessage } from "@/lib/types/ErrorTypes";
 import { UserAuth } from "@/lib/types/UserTypes";
-import { looseEmailRegex } from "@/lib/validations/emailRegex";
-import { loosePasswordRegex } from "@/lib/validations/passwordRegex";
-import { useState, type MouseEvent } from "react";
+import { authFormValidation } from "@/lib/validations/authFormValidation";
+import axios from "axios";
+import { useState } from "react";
 
 // import { useEffect } from "react";
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<AuthMessage | null>(null);
   const [authFormData, setAuthFormData] = useState<UserAuth>({
     name: "",
     age: "",
@@ -21,9 +26,13 @@ const AuthPage = () => {
     e?.preventDefault();
     try {
       setIsLoading(true);
-      const validation = formValidation();
+      const validation = authFormValidation(authFormData);
       if (!validation.isSuccessful) {
         setIsLoading(false);
+        setMessage({
+          type: "error",
+          text: validation.message,
+        });
         return;
       }
       const dataToSend = {
@@ -34,10 +43,27 @@ const AuthPage = () => {
       };
       const res = await apiClient.post("/auth", dataToSend);
 
-      if (res.status !== 200) {
+      if (res.status === 200) {
+        // gets bypassed when email is already in use
+        setMessage({
+          type: "success",
+          text: res.data.message,
+        });
       }
     } catch (error) {
-      console.error("Authentication error:", error);
+      setIsLoading(false);
+      if (axios.isAxiosError(error)) {
+        setMessage({
+          type: "error",
+          text: error.response?.data.message || "Something went wrong",
+        });
+      } else {
+        setMessage({
+          type: "error",
+          text: "Network error or server not reachable",
+        });
+      }
+    } finally {
       setIsLoading(false);
     }
   };
@@ -48,92 +74,106 @@ const AuthPage = () => {
     }));
   };
 
-  const formValidation = () => {
-    if (!looseEmailRegex.test(authFormData.email)) {
-      return {
-        isSuccessful: false,
-        message: "Invalid email syntax. Try again.",
-      };
-    }
-
-    if (authFormData.password !== authFormData.repeatPassword) {
-      return {
-        isSuccessful: false,
-        message: "Passwords don't match. Try again.",
-      };
-    }
-
-    if (
-      !loosePasswordRegex.test(authFormData.password) ||
-      !loosePasswordRegex.test(authFormData.repeatPassword)
-    ) {
-      return {
-        isSuccessful: false,
-        message: "Password format incorrect. Try again.",
-      };
-    }
-    return {
-      isSuccessful: true,
-      message: "Credentials are fine! Waiting for authentication.",
-    };
-  };
-
   return (
-    <div className="flex items-center justify-center ">
-      <form action="" onSubmit={handleAuthentication}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your name"
-          onChange={handleInputChange}
-          required
-        />
+    <div className="flex flex-col items-center justify-center w-screen flex-1 bg-yellow-light gap-10">
+      <ElderhelpLogo className="italic font-semibold text-3xl" />
+      <div className="flex flex-col items-center h-fit p-4 rounded-md gap-4 w-[35vw] bg-white shadow-md">
+        <div className="w-fit h-fit flex flex-col items-center gap-1.5">
+          <p className="text-2xl">Welcome!</p>
+          <p className="text-sm">Create you account with us</p>
+        </div>
+        <form
+          action=""
+          onSubmit={handleAuthentication}
+          className="flex flex-col w-full gap-10"
+        >
+          <div className="w-full px-4 flex flex-col gap-5">
+            <div className="w-full flex justify-between">
+              <label htmlFor="name" className="text-xl font-medium">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your name"
+                onChange={handleInputChange}
+                className="w-1/2 px-2 focus:outline-yellow-light"
+                required
+              />
+            </div>
 
-        <label htmlFor="age">Age</label>
-        <input
-          type="text"
-          name="age"
-          placeholder="Your age"
-          onChange={handleInputChange}
-          required
-        />
+            <div className="w-full flex justify-between">
+              <label htmlFor="age" className="text-xl font-medium">
+                Age
+              </label>
+              <input
+                type="text"
+                name="age"
+                placeholder="Your age"
+                onChange={handleInputChange}
+                className="w-1/2 px-2 focus:outline-yellow-light"
+                required
+              />
+            </div>
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          name="email"
-          placeholder="Your email"
-          onChange={handleInputChange}
-          required
-        />
+            <div className="w-full flex justify-between">
+              <label htmlFor="email" className="text-xl font-medium">
+                Email
+              </label>
+              <input
+                type="text"
+                name="email"
+                placeholder="Your email"
+                onChange={handleInputChange}
+                className="w-1/2 px-2 focus:outline-yellow-light"
+                required
+              />
+            </div>
 
-        <label htmlFor="password">Password</label>
-        <input
-          type="text"
-          name="password"
-          placeholder="Your password"
-          onChange={handleInputChange}
-          required
-        />
+            <div className="w-full flex justify-between">
+              <label htmlFor="password" className="text-xl font-medium">
+                Password
+              </label>
+              <input
+                type="text"
+                name="password"
+                placeholder="Your password"
+                onChange={handleInputChange}
+                className="w-1/2 px-2 focus:outline-yellow-light"
+                required
+              />
+            </div>
 
-        <label htmlFor="repeatPassword">Repeat Password</label>
-        <input
-          type="text"
-          name="repeatPassword"
-          placeholder="Your password"
-          onChange={handleInputChange}
-          required
-        />
-
-        <Button
-          variant="primary"
-          buttonType="submit"
-          text="Create Account"
-          className="hover:scale-[1.05] transition-all"
-          onClick={handleAuthentication}
-        />
-      </form>
+            <div className="w-full flex justify-between">
+              <label htmlFor="repeatPassword" className="text-xl font-medium">
+                Repeat Password
+              </label>
+              <input
+                type="text"
+                name="repeatPassword"
+                placeholder="Repeat your password"
+                onChange={handleInputChange}
+                className="w-1/2 px-2 focus:outline-yellow-light"
+                required
+              />
+            </div>
+          </div>
+          {message && (
+            <AuthInfoMessage
+              type={message.type}
+              message={message.text ?? "An unexpected error occured"}
+            />
+          )}
+          <Button
+            variant="primary"
+            buttonType="submit"
+            text={isLoading ? <LoadingSpinner /> : "Create Account"}
+            className="hover:scale-[1.02] transition-all"
+            onClick={handleAuthentication}
+          />
+        </form>
+      </div>
+      {/* <p>Forgot your password? Reset Password</p> */}
     </div>
   );
 };

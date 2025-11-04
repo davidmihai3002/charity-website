@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import MainHeader from "@/components/layout/MainHeader";
+import { AuthProvider } from "@/lib/context/AuthContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -23,11 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`w-screen h-screen`}>
-        <MainHeader />
-        {children}
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body className={`w-screen h-screen flex flex-col`}>
+          <MainHeader />
+          {children}
+        </body>
+      </html>
+    </AuthProvider>
   );
 }
