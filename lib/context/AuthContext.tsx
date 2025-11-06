@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { apiClient } from "../connections/api";
 import { LoginFormData } from "../types/AuthTypes";
 import { DisplayUser } from "../types/UserTypes";
@@ -26,6 +26,7 @@ const AuthContext = createContext<AuthContextTypes | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<DisplayUser | null>(null);
+  const hasInitialized = useRef(false);
 
   const login = async ({
     loginData,
@@ -75,6 +76,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     const initializeAuth = async () => {
       try {
         const response = await apiClient.get("/refresh");
