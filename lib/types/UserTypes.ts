@@ -6,6 +6,13 @@ export interface User {
   password: string;
 }
 
+export interface DisplayUser {
+  id: number;
+  age: number;
+  email: string;
+  name: string;
+}
+
 export interface UserAuth {
   name: string;
   age: string;

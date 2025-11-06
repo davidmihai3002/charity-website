@@ -2,6 +2,7 @@
 
 import AuthInfoMessage from "@/components/auth/InfoMessage";
 import LoadingSpinner from "@/components/auth/LoadingSpinner";
+import UserAlreadyLoggedIn from "@/components/auth/UserAlreadyLoggedIn";
 import ElderhelpLogo from "@/components/business/ElderhelpLogo";
 import Button from "@/components/layout/Button";
 import { useAuth } from "@/lib/context/AuthContext";
@@ -9,7 +10,7 @@ import { AuthMessage } from "@/lib/types/ErrorTypes";
 import React, { useState } from "react";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const [loginFormData, setLoginFormData] = useState({
     email: "",
@@ -25,7 +26,9 @@ const LoginPage = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  return (
+  return user ? (
+    <UserAlreadyLoggedIn />
+  ) : (
     <div className="flex flex-col items-center justify-center w-screen flex-1 bg-yellow-light gap-10">
       <ElderhelpLogo className="italic font-semibold text-3xl" />
       <div className="flex flex-col items-center h-fit p-4 rounded-md gap-4 w-[35vw] bg-white shadow-md">
@@ -35,7 +38,7 @@ const LoginPage = () => {
         </div>
         <form
           action=""
-          onSubmit={() => login(loginFormData)}
+          onSubmit={(e) => login({ loginData: loginFormData, e })}
           className="flex flex-col w-full gap-10"
         >
           <div className="w-full px-4 flex flex-col gap-5">
@@ -78,7 +81,6 @@ const LoginPage = () => {
             buttonType="submit"
             text={isLoading ? <LoadingSpinner /> : "Create Account"}
             className="hover:scale-[1.02] transition-all"
-            onClick={() => login(loginFormData)}
           />
         </form>
       </div>
