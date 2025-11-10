@@ -7,6 +7,7 @@ import ElderhelpLogo from "@/components/business/ElderhelpLogo";
 import Button from "@/components/layout/Button";
 import { useAuth } from "@/lib/context/AuthContext";
 import { AuthMessage } from "@/lib/types/ErrorTypes";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const LoginPage = () => {
@@ -84,7 +85,12 @@ const LoginPage = () => {
           />
         </form>
       </div>
-      {/* <p>Forgot your password? Reset Password</p> */}
+      <div>
+        New User?{" "}
+        <Link href={"/auth"} className="text-blue-500">
+          Create an account
+        </Link>{" "}
+      </div>
     </div>
   );
 };

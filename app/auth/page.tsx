@@ -5,14 +5,17 @@ import LoadingSpinner from "@/components/auth/LoadingSpinner";
 import ElderhelpLogo from "@/components/business/ElderhelpLogo";
 import Button from "@/components/layout/Button";
 import { apiClient } from "@/lib/connections/api";
+import { useAuth } from "@/lib/context/AuthContext";
 import { AuthMessage } from "@/lib/types/ErrorTypes";
 import { UserAuth } from "@/lib/types/UserTypes";
 import { authFormValidation } from "@/lib/validations/authFormValidation";
 import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 
 // import { useEffect } from "react";
 const AuthPage = () => {
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<AuthMessage | null>(null);
   const [authFormData, setAuthFormData] = useState<UserAuth>({
@@ -44,11 +47,17 @@ const AuthPage = () => {
       const res = await apiClient.post("/auth", dataToSend);
 
       if (res.status === 200) {
-        // gets bypassed when email is already in use
         setMessage({
           type: "success",
           text: res.data.message,
         });
+
+        const dataToLogin = {
+          email: authFormData.email,
+          password: authFormData.password,
+        };
+
+        login({ loginData: dataToLogin, e });
       }
     } catch (error) {
       setIsLoading(false);
@@ -173,7 +182,12 @@ const AuthPage = () => {
           />
         </form>
       </div>
-      {/* <p>Forgot your password? Reset Password</p> */}
+      <div>
+        Existing User?{" "}
+        <Link href={"/login"} className="text-blue-500">
+          Log in
+        </Link>{" "}
+      </div>
     </div>
   );
 };

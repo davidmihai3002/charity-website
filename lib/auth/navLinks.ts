@@ -4,8 +4,8 @@ export const navLinks = [
     linkUrl: "/login",
   },
   {
-    linkTitle: "About Us",
-    linkUrl: "/about-us",
+    linkTitle: "Volunteers",
+    linkUrl: "/become-a-volunteer",
   },
   {
     linkTitle: "What we do",
@@ -23,8 +23,8 @@ export const navLinks = [
 
 export const userNavLinks = [
   {
-    linkTitle: "About Us",
-    linkUrl: "/about-us",
+    linkTitle: "Volunteers",
+    linkUrl: "/become-a-volunteer",
   },
   {
     linkTitle: "What we do",

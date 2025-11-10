@@ -6,6 +6,7 @@ import { LoginFormData } from "../types/AuthTypes";
 import { DisplayUser } from "../types/UserTypes";
 import { jwtDecode } from "jwt-decode";
 import { TokenPayload } from "../auth/JWTUtilities";
+import { useRouter } from "next/navigation";
 
 export interface AuthContextTypes {
   accessToken: string | null;
@@ -14,7 +15,7 @@ export interface AuthContextTypes {
     e,
   }: {
     loginData: LoginFormData;
-    e: React.FormEvent<HTMLFormElement>;
+    e?: React.FormEvent<HTMLFormElement>;
   }) => void;
   logout: () => void;
   user: DisplayUser | null;
@@ -28,14 +29,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<DisplayUser | null>(null);
   const hasInitialized = useRef(false);
 
+  const router = useRouter();
+
   const login = async ({
     loginData,
     e,
   }: {
     loginData: LoginFormData;
-    e: React.FormEvent<HTMLFormElement>;
+    e?: React.FormEvent<HTMLFormElement>;
   }) => {
-    e.preventDefault();
+    e?.preventDefault();
     try {
       const response = await apiClient.post("/login", loginData);
       if (response.status !== 200) {
@@ -54,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setAccessToken(null);
     } finally {
-      // window.location.reload();
+      router.push("/");
     }
   };
   const logout = async () => {
