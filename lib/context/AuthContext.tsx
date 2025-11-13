@@ -20,6 +20,7 @@ export interface AuthContextTypes {
   logout: () => void;
   user: DisplayUser | null;
   setUser: React.Dispatch<React.SetStateAction<DisplayUser | null>>;
+  getLoggedUserId: () => void;
 }
 
 const AuthContext = createContext<AuthContextTypes | null>(null);
@@ -30,6 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const hasInitialized = useRef(false);
 
   const router = useRouter();
+
+  const getLoggedUserId = () => {
+    return user?.id ?? null;
+  };
 
   const login = async ({
     loginData,
@@ -76,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     user,
     setUser,
+    getLoggedUserId,
   };
 
   useEffect(() => {

@@ -2,6 +2,7 @@
 
 import Hero from "@/components/hero/Hero";
 import AboutUsHomepageSection from "@/components/layout/AboutUsHomepageSection";
+import WhatWeDoHomepageSection from "@/components/layout/WhatWeDoHomepageSection";
 import { apiClient } from "@/lib/connections/api";
 import { useEffect } from "react";
 
@@ -13,6 +14,7 @@ export default function Home() {
     <div className="">
       <Hero />
       <AboutUsHomepageSection />
+      <WhatWeDoHomepageSection />
     </div>
   );
 }

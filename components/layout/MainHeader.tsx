@@ -4,10 +4,12 @@ import { useAuth } from "@/lib/context/AuthContext";
 import Button from "./Button";
 import Link from "next/link";
 import { navLinks, userNavLinks } from "@/lib/auth/navLinks";
+import { useRouter } from "next/navigation";
 
 const MainHeader = () => {
   const { user, logout } = useAuth();
   const links = user ? userNavLinks : navLinks;
+  const router = useRouter();
 
   return (
     <div className="w-screen bg-background h-fit flex flex-row justify-between items-center px-[110px] py-[18px] ">
@@ -27,7 +29,11 @@ const MainHeader = () => {
           </Link>
         ))}
       </div>
-      <Button variant="navigation" text="Donate" />
+      <Button
+        variant="navigation"
+        text="Donate"
+        onClick={() => router.push("/donate")}
+      />
     </div>
   );
 };

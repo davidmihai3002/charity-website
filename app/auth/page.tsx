@@ -84,7 +84,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen flex-1 bg-yellow-light gap-10">
+    <div className="flex flex-col items-center justify-center w-screen h-[70vh] bg-yellow-light gap-10">
       <ElderhelpLogo className="italic font-semibold text-3xl" />
       <div className="flex flex-col items-center h-fit p-4 rounded-md gap-4 w-[35vw] bg-white shadow-md">
         <div className="w-fit h-fit flex flex-col items-center gap-1.5">

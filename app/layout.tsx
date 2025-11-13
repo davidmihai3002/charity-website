@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MainHeader from "@/components/layout/MainHeader";
 import { AuthProvider } from "@/lib/context/AuthContext";
+import MainFooter from "@/components/layout/MainFooter";
+import { DonationsProvider } from "@/lib/context/DonationsContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -25,12 +27,15 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en">
-        <body className={`w-screen h-screen flex flex-col`}>
-          <MainHeader />
-          {children}
-        </body>
-      </html>
+      <DonationsProvider>
+        <html lang="en">
+          <body className={`w-screen min-h-screen flex flex-col`}>
+            <MainHeader />
+            {children}
+            <MainFooter />
+          </body>
+        </html>
+      </DonationsProvider>
     </AuthProvider>
   );
 }
