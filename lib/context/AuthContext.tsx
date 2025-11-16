@@ -72,6 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
     } catch (error) {
       console.log("Logout failed");
+    } finally {
+      window.location.reload();
     }
   };
 

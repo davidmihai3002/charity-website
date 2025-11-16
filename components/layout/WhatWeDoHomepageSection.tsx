@@ -37,7 +37,7 @@ const WhatWeDoHomepageSection = () => {
     >
       <div className="flex flex-col gap-8">
         <h2 className="font-bold leading-[120%] text-5xl">
-          Some services we provide services for elders
+          Some services we provide for elders
         </h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse

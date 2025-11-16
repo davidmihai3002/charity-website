@@ -80,7 +80,7 @@ const LoginPage = () => {
           <Button
             variant="primary"
             buttonType="submit"
-            text={isLoading ? <LoadingSpinner /> : "Create Account"}
+            text={isLoading ? <LoadingSpinner /> : "Log in"}
             className="hover:scale-[1.02] transition-all"
           />
         </form>

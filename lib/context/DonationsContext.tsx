@@ -5,7 +5,8 @@ import { useAuth } from "./AuthContext";
 
 export interface DonationsContextProps {
   submitDonation: (e?: React.FormEvent<HTMLFormElement>) => void;
-
+  infoMessage: InfoMessageType | null;
+  isLoading: boolean;
   donationsFormData: DonationsProps | null;
   setDonationsFormData: React.Dispatch<
     React.SetStateAction<DonationsProps | null>
@@ -14,37 +15,65 @@ export interface DonationsContextProps {
 export interface DonationsProps {
   name: string;
   email: string;
-  amount: number;
+  amount: string;
   message?: string;
   userId?: number;
+}
+
+export interface InfoMessageType {
+  type: "error" | "success" | "";
+  message: string;
 }
 
 const DonationsContext = createContext<DonationsContextProps | null>(null);
 
 export function DonationsProvider({ children }: { children: React.ReactNode }) {
   const [donationsFormData, setDonationsFormData] =
-    useState<DonationsProps | null>(null);
-  const { getLoggedUserId } = useAuth();
+    useState<DonationsProps | null>({
+      name: "",
+      email: "",
+      amount: "",
+      message: "",
+      userId: undefined,
+    });
+  const [infoMessage, setInfoMessage] = useState<InfoMessageType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { getLoggedUserId, user } = useAuth();
 
   const submitDonation = async (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
+    setIsLoading(true);
     try {
       const dataToSend = {
-        name: donationsFormData?.name,
-        email: donationsFormData?.email,
+        name: user ? user.name : donationsFormData?.name,
+        email: user ? user.email : donationsFormData?.email,
         amount: Number(donationsFormData?.amount),
-        message: donationsFormData?.message ?? null,
+        message:
+          donationsFormData?.message?.length! > 0
+            ? donationsFormData?.message
+            : "none",
         userId: getLoggedUserId(),
       };
-      apiClient.post("/donate", dataToSend);
-      console.log("donated");
-
+      const res = await apiClient.post("/donate", dataToSend);
+      if (res.status === 200) {
+        setIsLoading(false);
+        setInfoMessage({ type: "success", message: res.data.message });
+      }
       //   TODO: Continue with this function, add api route also
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(false);
+      setInfoMessage({
+        type: "error",
+        message:
+          "Your donation could not be processed. Please check your credentials and try again.",
+      });
+    }
   };
 
   const passedValues = {
     submitDonation,
+    infoMessage,
+    isLoading,
     donationsFormData,
     setDonationsFormData,
   };

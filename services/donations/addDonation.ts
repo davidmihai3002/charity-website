@@ -8,8 +8,8 @@ export async function addDonation(donationData: DonationsProps) {
       donationData.name,
       donationData.email,
       donationData.amount,
-      donationData.message ?? "none",
-      donationData.userId ?? 0,
+      donationData.message,
+      donationData.userId ?? null,
     ]
   );
   const insertId = (result as any)?.insertId ?? null;

@@ -12,4 +12,4 @@ CREATE TABLE Donations (
     amount INT,
     donated_at TIME,
     donation_type VARCHAR(100)
-   )
+)
